@@ -3,56 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide MATh.en.JEANS</title>
-    <!-- Lien vers le fichier CSS -->
-    <link rel="stylesheet" href="style.css">
+    <title>Guide virtuel – Spécialité NSI</title>
+    <meta name="description" content="Un guide virtuel pour découvrir la spécialité Numérique et Sciences Informatiques (NSI) au lycée.">
+
+    <!-- Lien vers le fichier CSS (à mettre dans le même dossier que index.html) -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
     <!-- En-tête de la page -->
     <header class="page-header">
-        <h1>MATh.en.JEANS</h1>
-        <p class="subtitle">Une méthode pour ne pas subir les mathématiques, mais les faire vivre.</p>
+        <h1>Spécialité NSI</h1>
+        <p class="subtitle">
+            Un guide interactif pour découvrir la spécialité <strong>Numérique &amp; Sciences Informatiques</strong>.
+        </p>
+        <p class="subtitle-secondary">
+            Pose tes questions sur le programme, les débouchés, le niveau requis, l’évaluation, etc.
+        </p>
     </header>
 
-    <img src="bot-mascot.png" alt="Mascotte Robot" class="floating-mascot">
+    <!-- Mascotte (à placer dans le même dossier : bot-mascot.png) -->
+    <img src="bot-mascot.png" alt="Mascotte du chatbot NSI" class="floating-mascot">
     
     <!-- Fenêtre de Chat Intégrée -->
-    <div class="chat-window" id="chatWindow">
+    <div class="chat-window" id="chatWindow" aria-label="Chatbot spécialité NSI">
         
         <!-- En-tête du Chat -->
         <div class="chat-header">
             <h3>
-                <svg class="icon" viewBox="0 0 24 24">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                 </svg>
-                Guide Virtuel
+                NSI – Guide virtuel
             </h3>
+            <p class="chat-subtitle">
+                Je t’aide à comprendre la spécialité NSI : programme, difficultés, métiers, etc.
+            </p>
         </div>
 
         <!-- Zone des messages -->
         <div class="chat-messages" id="chatMessages">
-            <!-- Les messages seront injectés ici par JS -->
+            <!-- Les messages seront injectés ici par script.js -->
         </div>
 
-        <!-- Zone d'interaction (Boutons) -->
+        <!-- Zone d'interaction (Boutons / Input) -->
         <div class="chat-controls" id="chatControls">
-            <!-- Les choix seront injectés ici par JS -->
+            <!-- Les choix ou le champ de saisie seront injectés ici par script.js -->
         </div>
     </div>
 
+    <!-- Section d’infos complémentaires (facultatif) -->
+    <section class="info-section">
+        <h2>Que puis-je demander au chatbot ?</h2>
+        <ul>
+            <li>« C’est quoi la spécialité NSI ? »</li>
+            <li>« Quel est le programme en 1<sup>re</sup> / terminale NSI ? »</li>
+            <li>« Est-ce que NSI est difficile ? »</li>
+            <li>« Faut-il être très bon en maths pour prendre NSI ? »</li>
+            <li>« Avec NSI, je peux faire quels métiers plus tard ? »</li>
+        </ul>
+        <p>
+            Clique sur les boutons proposés dans la fenêtre de chat ou écris directement ta question
+            (selon ce que tu programmeras dans <code>script.js</code>).
+        </p>
+    </section>
+
     <!-- Pied de page (Footer) -->
     <footer class="page-footer">
-        <!-- Avatar -->
-        <img src="avatar.png" alt="Avatar Christophe Navaux" class="footer-avatar">
+        <!-- Avatar (à placer dans le même dossier : avatar.png) -->
+        <img src="avatar.png" alt="Avatar Eddy Bachaalany" class="footer-avatar">
         
         <div class="footer-text">
-            © 2025 — Website réalisé par <strong>Christophe Navaux</strong> <br>
-            EF2D de Mathématiques - Zone Proche-Orient.
+            © 2025 — Site réalisé par <strong>Eddy Bachaalany</strong><br>
+            Enseignant &amp; référent numérique — Spécialité NSI.
         </div>
     </footer>
 
     <!-- Lien vers le fichier JS (en bas de page pour la performance) -->
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
