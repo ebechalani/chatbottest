@@ -1,0 +1,281 @@
+/* * --- CSS VARIABLES & RESET --- */
+:root {
+    --primary-color: #1e40af; /* Bleu Jeans foncé */
+    --primary-light: #3b82f6; /* Bleu plus clair */
+    --accent-color: #eff6ff; /* Fond très clair */
+    --text-dark: #1f2937;
+    --text-light: #ffffff;
+    --gray-bubble: #f3f4f6;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+    /* --- MISE À JOUR : IMAGE DE FOND EN FILIGRANE --- */
+    /* On superpose un dégradé blanc à 90% (0.9) sur l'image pour l'effet filigrane */
+    background-image: linear-gradient(rgba(248, 250, 252, 0.9), rgba(248, 250, 252, 0.9)), 
+                      url('ambiance.jpeg');
+    background-size: cover;      /* L'image couvre tout l'écran */
+    background-position: center; /* L'image est centrée */
+    background-attachment: fixed;/* L'image reste fixe quand on scrolle */
+    background-repeat: no-repeat;
+}
+
+/* * --- PAGE CONTENT (TITRE & INTRO) --- */
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+    max-width: 600px;
+    position: relative; /* Pour passer au-dessus du fond */
+    z-index: 1;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-shadow: 2px 2px 0px rgba(255,255,255,0.5); /* Petite ombre pour lisibilité */
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #475569; /* Un peu plus foncé pour le contraste sur l'image */
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* * --- CHAT WINDOW (EMBEDDED) --- */
+.chat-window {
+    width: 100%;
+    max-width: 750px;
+    height: 600px;
+    background-color: rgba(255, 255, 255, 0.95); /* Légère transparence du blanc */
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid #e2e8f0;
+    backdrop-filter: blur(5px); /* Effet de flou derrière la fenêtre */
+}
+
+/* HEADER DU CHAT */
+.chat-header {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.chat-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon {
+    width: 24px; 
+    height: 24px; 
+    fill: currentColor;
+}
+
+/* MESSAGES AREA */
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: transparent; /* Fond transparent pour profiter du blanc de la fenêtre */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+}
+
+.chat-messages::-webkit-scrollbar { width: 6px; }
+.chat-messages::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 3px; }
+
+/* BUBBLES */
+.message {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    position: relative;
+    animation: fadeIn 0.4s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.bot {
+    background-color: var(--gray-bubble);
+    color: var(--text-dark);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.message.user {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+/* CONTROLS */
+.chat-controls {
+    padding: 20px;
+    background-color: rgba(239, 246, 255, 0.9); /* Accent color avec transparence */
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    min-height: 80px;
+    align-content: center;
+}
+
+.choice-chip {
+    background-color: white;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.choice-chip:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(30, 64, 175, 0.2);
+}
+
+.choice-chip:active {
+    transform: translateY(0);
+}
+
+/* TYPING ANIMATION */
+.typing-indicator {
+    display: flex;
+    gap: 5px;
+    padding: 15px 20px;
+    background-color: var(--gray-bubble);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+    width: fit-content;
+    margin-bottom: 5px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #94a3b8;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dot:nth-child(1) { animation-delay: -0.32s; }
+.dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* FOOTER */
+.page-footer {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: #334155; /* Texte un peu plus foncé */
+    font-size: 0.9rem;
+    padding: 20px;
+    border-top: 1px solid rgba(226, 232, 240, 0.6);
+    width: 100%;
+    max-width: 750px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent pour le footer */
+    border-radius: 12px;
+}
+
+.footer-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    background-color: #cbd5e1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.footer-text {
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 600px) {
+    body { padding: 10px; justify-content: flex-start; }
+    .chat-window { height: 75vh; }
+    h1 { font-size: 1.8rem; }
+    .page-footer { flex-direction: column; text-align: center; }
+}
+/* * --- MASCOTTE FLOTTANTE --- */
+.floating-mascot {
+    width: 120px;       /* Taille généreuse pour voir les détails */
+    height: auto;
+    margin-bottom: -40px; /* L'image rentre un peu dans la fenêtre de chat */
+    margin-left: -280px;  /* On le décale vers la gauche */
+    z-index: 10;          /* Il passe au-dessus de la fenêtre */
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); /* Une petite ombre pour le relief */
+    
+    /* Animation optionnelle : petit flottement */
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* RESPONSIVE : Sur mobile, on le centre au-dessus */
+@media (max-width: 600px) {
+    .floating-mascot {
+        margin-left: 0;
+        margin-bottom: -20px;
+        width: 100px;
+    }
+}
