@@ -1,157 +1,240 @@
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- CONFIGURATION DU SCENARIO ---
-    const scriptData = {
-        DEPART: {
-            message: "Bonjour ! 👋 Je suis le guide virtuel MATh.en.JEANS. Je suis là pour vous expliquer comment vivre les maths autrement. Que voulez-vous savoir ?",
-            choices: [
-                { label: "Quesako ?", next: "QUESAKO" },
-                { label: "Le Concept", next: "CONCEPT" },
-                { label: "Pour les Profs", next: "PROFS" },
-                { label: "Pour les Élèves", next: "ELEVES" },
-                { label: "Le Fonctionnement", next: "FONCTIONNEMENT" }
-            ]
+"use strict";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const messagesEl = document.getElementById("chatMessages");
+    const controlsEl = document.getElementById("chatControls");
+
+    /* ===== Base de connaissances simplifiée NSI ===== */
+    const knowledge = [
+        {
+            id: "intro",
+            keywords: ["c’est quoi", "definition", "définition", "nsi", "spécialité"],
+            answer: `La spécialité <strong>NSI (Numérique et Sciences Informatiques)</strong> te permet de découvrir l’informatique “de l’intérieur”.<br><br>
+On y apprend à :
+<ul>
+<li>programmer (souvent en <strong>Python</strong>),</li>
+<li>manipuler des <strong>données</strong>,</li>
+<li>comprendre le fonctionnement d’un <strong>ordinateur</strong>, d’un <strong>réseau</strong>, d’un <strong>site web</strong>,</li>
+<li>raisonner en termes d’<strong>algorithmes</strong>.</li>
+</ul>
+C’est une spécialité pour les élèves <strong>curieux</strong>, qui aiment comprendre, tester et résoudre des problèmes.`
         },
-        QUESAKO: {
-            message: "C'est un acronyme ! Il signifie : <strong>M</strong>éthode d'<strong>A</strong>pprentissage des <strong>Th</strong>éories mathématiques en <strong>J</strong>umelant des <strong>É</strong>tablissements pour une <strong>A</strong>pproche <strong>N</strong>ouvelle du <strong>S</strong>avoir.",
-            choices: [
-                { label: "Le Concept", next: "CONCEPT" },
-                { label: "Retour au début", next: "DEPART" }
-            ]
+        {
+            id: "programme-1re",
+            keywords: ["première", "1ere", "1re", "programme 1", "1 re"],
+            answer: `En <strong>1<sup>re</sup> NSI</strong>, on pose les bases :
+<ul>
+<li><strong>Programmation</strong> : variables, conditions, boucles, fonctions, listes, dictionnaires…</li>
+<li><strong>Données</strong> : types de données, tableaux/listes, fichiers simples.</li>
+<li><strong>Algorithmique</strong> : recherche, tri simples, raisonnement étape par étape.</li>
+<li><strong>Architecture</strong> : binaire, composants d’un ordinateur, système d’exploitation.</li>
+<li><strong>Réseaux</strong> : Internet, adresse IP, client/serveur.</li>
+</ul>
+Le travail se fait surtout en <strong>TP sur ordinateur</strong>, avec des petits projets.`
         },
-        CONCEPT: {
-            message: "MATh.en.JEANS, c'est ne pas subir les maths, mais les FAIRE ! 🧠 L'idée est de mettre les élèves en situation de recherche, sans notes, comme de vrais chercheurs.",
-            choices: [
-                { label: "Comment ça marche ?", next: "FONCTIONNEMENT" },
-                { label: "Retour au début", next: "DEPART" }
-            ]
+        {
+            id: "programme-term",
+            keywords: ["terminale", "terminal", "tale", "programm", "bac"],
+            answer: `En <strong>terminale NSI</strong>, on approfondit :
+<ul>
+<li><strong>Structures de données</strong> : piles, files, arbres, graphes simples.</li>
+<li><strong>Algorithmes</strong> : parcours de graphes, recherche et tri plus avancés.</li>
+<li><strong>Bases de données</strong> : modèle relationnel, requêtes (souvent SQL).</li>
+<li><strong>Réseaux</strong> : protocoles, sécurité de base.</li>
+<li><strong>Projet</strong> : réalisation d’un projet plus conséquent (app, jeu, outil…).</li>
+</ul>
+Cela prépare à l’<strong>épreuve de spécialité</strong> au bac.`
         },
-        PROFS: {
-            message: "Pour les enseignants, c'est l'occasion de pratiquer une pédagogie de projet. 👨‍🏫 Vous devez trouver un binôme dans un autre établissement et l'association vous aide à trouver un chercheur universitaire.",
-            choices: [
-                { label: "Et le chercheur ?", next: "FONCTIONNEMENT" },
-                { label: "Retour au début", next: "DEPART" }
-            ]
+        {
+            id: "difficulte",
+            keywords: ["difficile", "dur", "compliqué", "niveau"],
+            answer: `NSI peut paraître difficile au début car on se trompe souvent… mais c’est <strong>normal</strong> en informatique 😄<br><br>
+Ce qu’il faut surtout :
+<ul>
+<li>accepter de <strong>tester et corriger</strong>,</li>
+<li>être un minimum à l’aise avec la <strong>logique</strong>,</li>
+<li>travailler <strong>régulièrement</strong>, pas seulement avant les contrôles.</li>
+</ul>
+Tu n’as pas besoin d’être un “crack” en maths, mais être complètement en difficulté en logique peut rendre la spécialité plus compliquée.`
         },
-        ELEVES: {
-            message: "Pas besoin d'être un génie ! 🚀 Il faut juste être curieux. Tu vas apprendre à travailler en équipe, à l'oral, et à chercher des solutions inédites.",
-            choices: [
-                { label: "Les Congrès ?", next: "CONGRES" },
-                { label: "Retour au début", next: "DEPART" }
-            ]
+        {
+            id: "maths",
+            keywords: ["maths", "mathématiques", "bon en maths"],
+            answer: `Les <strong>maths aident</strong> pour la logique, mais NSI et maths sont deux spécialités différentes.<br><br>
+En NSI, tu utilises surtout :
+<ul>
+<li>la <strong>logique</strong>,</li>
+<li>la capacité à <strong>décomposer un problème</strong>,</li>
+<li>la patience pour chercher des erreurs.</li>
+</ul>
+Si tu es moyen en maths mais <strong>motivé et sérieux</strong>, tu peux très bien t’en sortir en NSI.`
         },
-        FONCTIONNEMENT: {
-            message: "Le dispositif repose sur 3 piliers : 1️⃣ Le Jumelage (2 établissements), 2️⃣ Le Sujet (proposé par un chercheur), 3️⃣ Les Congrès (présentation des résultats).",
-            choices: [
-                { label: "C'est quoi les Congrès ?", next: "CONGRES" },
-                { label: "Retour au début", next: "DEPART" }
-            ]
+        {
+            id: "debouches",
+            keywords: ["métier", "metier", "débouchés", "etudes", "après le bac", "apres le bac"],
+            answer: `Avec NSI, tu prépares des études dans tout le domaine du <strong>numérique</strong> :
+<ul>
+<li>Licences d’<strong>informatique</strong></li>
+<li><strong>Écoles d’ingénieurs</strong> (informatique, télécoms, IA, robotique…)</li>
+<li>BUT / BTS liés à l’informatique, aux réseaux, à la cybersécurité, au multimédia…</li>
+</ul>
+Et les métiers possibles (après des études supérieures) :
+<ul>
+<li>développeur / développeuse,</li>
+<li>ingénieur informatique,</li>
+<li>data analyst / data scientist,</li>
+<li>administrateur systèmes et réseaux,</li>
+<li>expert en cybersécurité,</li>
+<li>développeur de jeux vidéo, etc.</li>
+</ul>
+Même si tu ne fais pas carrière dans l’informatique, comprendre le numérique est un <strong>énorme avantage</strong>.`
         },
-        CONGRES: {
-            message: "C'est la fête des mathématiques et de la recherche ! 🎉 En fin d'année, tous les ateliers se réunissent à l'université pour présenter leurs travaux en amphi. C'est l'aboutissement du projet.",
-            choices: [
-                { label: "Retour au début", next: "DEPART" }
-            ]
+        {
+            id: "evaluation",
+            keywords: ["évaluation", "controle", "note", "notation"],
+            answer: `En NSI, on est évalué de plusieurs façons :
+<ul>
+<li><strong>Évaluations écrites</strong> : questions de cours, compréhension d’algorithmes.</li>
+<li><strong>Évaluations pratiques</strong> sur ordinateur : écriture ou modification de programmes.</li>
+<li>Parfois un <strong>projet</strong> sur plusieurs semaines.</li>
+</ul>
+En terminale, la spécialité compte pour le <strong>bac</strong> avec une épreuve officielle (modalités exactes selon les textes en vigueur).`
+        },
+        {
+            id: "parents",
+            keywords: ["mon enfant", "ma fille", "mon fils", "je suis parent", "parent"],
+            answer: `Pour un élève, choisir NSI est pertinent s’il/elle :
+<ul>
+<li>est curieux/curieuse de comprendre les <strong>technologies</strong>,</li>
+<li>aime <strong>manipuler</strong> et tester sur ordinateur,</li>
+<li>accepte de <strong>chercher</strong> et de corriger des erreurs.</li>
+</ul>
+La spécialité donne une vraie <strong>culture numérique</strong> et ouvre des perspectives dans l’informatique, l’ingénierie, la data, la cybersécurité, etc.<br>
+En cas d’hésitation, il est conseillé d’en parler avec le <strong>professeur de NSI</strong> et le <strong>professeur principal</strong>.`
         }
-    };
+    ];
 
-    // --- ÉLÉMENTS DOM ---
-    const chatMessages = document.getElementById('chatMessages');
-    const chatControls = document.getElementById('chatControls');
+    /* ===== FONCTIONS D’AFFICHAGE ===== */
 
-    // --- FONCTIONS D'INTERFACE ---
+    function addMessage(text, from = "bot") {
+        const msg = document.createElement("div");
+        msg.className = `message ${from}`;
+        msg.innerHTML = text;
+        messagesEl.appendChild(msg);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
 
-    // Scroll automatique vers le bas
-    const scrollToBottom = () => {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    };
+    function setQuickButtons() {
+        const quickContainer = document.createElement("div");
+        quickContainer.className = "quick-buttons";
 
-    // Afficher un message (User ou Bot)
-    const appendMessage = (text, sender) => {
-        const div = document.createElement('div');
-        div.classList.add('message', sender);
-        div.innerHTML = text;
-        chatMessages.appendChild(div);
-        scrollToBottom();
-    };
+        const buttons = [
+            { label: "C’est quoi NSI ?", topicId: "intro" },
+            { label: "Programme en 1re", topicId: "programme-1re" },
+            { label: "Programme en terminale", topicId: "programme-term" },
+            { label: "NSI est-elle difficile ?", topicId: "difficulte" },
+            { label: "Après le bac ?", topicId: "debouches" }
+        ];
 
-    // Afficher l'indicateur de frappe (Typing...)
-    const showTypingIndicator = () => {
-        const div = document.createElement('div');
-        div.classList.add('typing-indicator');
-        div.id = 'typingIndicator';
-        div.innerHTML = `
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        `;
-        chatMessages.appendChild(div);
-        scrollToBottom();
-    };
-
-    // Supprimer l'indicateur de frappe
-    const removeTypingIndicator = () => {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) indicator.remove();
-    };
-
-    // Afficher les choix (Boutons)
-    const showChoices = (choices) => {
-        chatControls.innerHTML = ''; // Nettoyer
-        
-        choices.forEach(choice => {
-            const btn = document.createElement('button');
-            btn.classList.add('choice-chip');
-            btn.textContent = choice.label;
-            
-            btn.addEventListener('click', () => {
-                handleUserChoice(choice.label, choice.next);
+        buttons.forEach(({ label, topicId }) => {
+            const btn = document.createElement("button");
+            btn.textContent = label;
+            btn.addEventListener("click", () => {
+                handleQuickTopic(topicId, label);
             });
-            
-            chatControls.appendChild(btn);
+            quickContainer.appendChild(btn);
         });
-    };
 
-    // --- CŒUR DE LOGIQUE ---
+        controlsEl.appendChild(quickContainer);
+    }
 
-    // Gestion du clic utilisateur
-    const handleUserChoice = (label, nextStepKey) => {
-        // 1. Désactiver les boutons (pour éviter double clic)
-        chatControls.innerHTML = '';
-        
-        // 2. Afficher le choix de l'utilisateur comme un message
-        appendMessage(label, 'user');
+    function setInputRow() {
+        const row = document.createElement("div");
+        row.className = "chat-input-row";
 
-        // 3. Déclencher la réponse du bot
-        gotoStep(nextStepKey);
-    };
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Pose ta question sur la spécialité NSI…";
 
-    // Transition vers une étape du scénario
-    const gotoStep = (stepKey) => {
-        const stepData = scriptData[stepKey];
-        if (!stepData) return;
+        const button = document.createElement("button");
+        button.textContent = "Envoyer";
 
-        // Afficher "Typing..."
-        showTypingIndicator();
+        button.addEventListener("click", () => {
+            const text = input.value.trim();
+            if (text) {
+                handleUserInput(text);
+                input.value = "";
+                input.focus();
+            }
+        });
 
-        // Délai aléatoire pour simuler la réflexion
-        const delay = Math.random() * 500 + 500;
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                button.click();
+            }
+        });
 
-        setTimeout(() => {
-            removeTypingIndicator();
-            appendMessage(stepData.message, 'bot');
-            
-            // Si le message est long, on attend un peu avant d'afficher les boutons
-            setTimeout(() => {
-                showChoices(stepData.choices);
-                scrollToBottom();
-            }, 300);
-            
-        }, delay);
-    };
+        row.appendChild(input);
+        row.appendChild(button);
+        controlsEl.appendChild(row);
+    }
+    /* ===== LOGIQUE DU BOT ===== */
+    function findAnswer(userText) {
+        const lower = userText.toLowerCase();
 
-    // --- DEMARRAGE AUTOMATIQUE ---
-    setTimeout(() => {
-        gotoStep('DEPART');
-    }, 500);
+        for (const item of knowledge) {
+            if (item.keywords.some(k => lower.includes(k))) {
+                return item.answer;
+            }
+        }
+
+        // Pas de match → réponse générique
+        return `Je ne suis pas sûr de bien comprendre ta question 😅<br>
+Essaie de la reformuler, ou choisis un thème ci-dessous :
+<ul>
+<li>programme en 1<sup>re</sup> ou en terminale</li>
+<li>difficulté / niveau requis</li>
+<li>débouchés et études après le bac</li>
+<li>lien entre NSI et les maths</li>
+</ul>`;
+    }
+
+    function handleUserInput(text) {
+        addMessage(text, "user");
+        const answer = findAnswer(text);
+        addMessage(answer, "bot");
+    }
+
+    function handleQuickTopic(topicId, labelShown) {
+        addMessage(labelShown, "user");
+        const item = knowledge.find(k => k.id === topicId);
+        if (item) {
+            addMessage(item.answer, "bot");
+        } else {
+            addMessage("Je n’ai pas encore d’informations sur ce sujet, désolé.", "bot");
+        }
+    }
+
+    function init() {
+        // message d’accueil
+        addMessage(
+            `Bonjour 👋<br>
+Je suis ton <strong>guide virtuel NSI</strong>.<br>
+Je peux t’aider à comprendre :
+<ul>
+<li>en quoi consiste la spécialité <strong>NSI</strong>,</li>
+<li>le <strong>programme</strong> en 1<sup>re</sup> et en terminale,</li>
+<li>la <strong>difficulté</strong>, le lien avec les <strong>maths</strong>,</li>
+<li>les <strong>débouchés</strong> après le bac.</li>
+</ul>
+Tu peux utiliser les boutons ci-dessous ou poser ta propre question.`
+        );
+
+        // Ajout de l’input + boutons rapides
+        setInputRow();
+        setQuickButtons();
+    }
+
+    init();
 });
