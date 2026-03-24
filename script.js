@@ -17,7 +17,35 @@ On y apprend à :
 <li>comprendre le fonctionnement d’un <strong>ordinateur</strong>, d’un <strong>réseau</strong>, d’un <strong>site web</strong>,</li>
 <li>raisonner en termes d’<strong>algorithmes</strong>.</li>
 </ul>
-C’est une spécialité pour les élèves <strong>curieux</strong>, qui aiment comprendre, tester et résoudre des problèmes.`
+C’est une spécialité pour les élèves <strong>curieux</strong>, qui aiment comprendre, tester et résoudre des problèmes.<br><br>
+<strong>En pratique :</strong>
+<ul>
+<li>la NSI se fait majoritairement en <strong>TP</strong> devant l’ordinateur ;</li>
+<li>on alterne <strong>cours, exercices, mini-projets</strong> et travail collaboratif ;</li>
+<li>l’objectif est d’acquérir des compétences utiles pour les études supérieures et pour comprendre le monde numérique.</li>
+</ul>`
+        },
+        {
+            id: "profil-eleve",
+            keywords: ["profil", "pour qui", "quel élève", "quel eleve", "à qui", "a qui", "orientation"],
+            answer: `La NSI est particulièrement adaptée si tu apprécies :
+<ul>
+<li>la <strong>logique</strong> et les énigmes,</li>
+<li>le fait de <strong>créer</strong> (petits jeux, scripts, pages web, outils),</li>
+<li>le travail <strong>méthodique</strong> : tester, corriger, améliorer.</li>
+</ul>
+Elle convient aussi à des élèves qui n’avaient jamais codé, à condition d’être <strong>réguliers</strong> et <strong>motivés</strong>.<br><br>
+<strong>Bon à savoir :</strong> on peut réussir en NSI sans être “excellent” en maths, mais il faut aimer raisonner et persévérer.`
+        },
+        {
+            id: "horaires",
+            keywords: ["combien d’heures", "combien d'heures", "horaire", "horaires", "volume horaire"],
+            answer: `Le volume horaire de la spécialité NSI est généralement :
+<ul>
+<li><strong>4h par semaine en 1<sup>re</sup></strong>,</li>
+<li><strong>6h par semaine en terminale</strong> (si la spécialité est conservée).</li>
+</ul>
+Ces horaires peuvent légèrement varier selon l’organisation de l’établissement (groupes, projets, emplois du temps).`
         },
         {
             id: "programme-1re",
@@ -130,9 +158,11 @@ En cas d’hésitation, il est conseillé d’en parler avec le <strong>professe
 
         const buttons = [
             { label: "C’est quoi NSI ?", topicId: "intro" },
+            { label: "Pour quel profil ?", topicId: "profil-eleve" },
             { label: "Programme en 1re", topicId: "programme-1re" },
             { label: "Programme en terminale", topicId: "programme-term" },
             { label: "NSI est-elle difficile ?", topicId: "difficulte" },
+            { label: "Combien d’heures ?", topicId: "horaires" },
             { label: "Après le bac ?", topicId: "debouches" }
         ];
 
@@ -224,7 +254,9 @@ Je suis ton <strong>guide virtuel NSI</strong>.<br>
 Je peux t’aider à comprendre :
 <ul>
 <li>en quoi consiste la spécialité <strong>NSI</strong>,</li>
+<li>à quel <strong>profil d’élève</strong> elle correspond,</li>
 <li>le <strong>programme</strong> en 1<sup>re</sup> et en terminale,</li>
+<li>le <strong>volume horaire</strong> et l’organisation en classe,</li>
 <li>la <strong>difficulté</strong>, le lien avec les <strong>maths</strong>,</li>
 <li>les <strong>débouchés</strong> après le bac.</li>
 </ul>
